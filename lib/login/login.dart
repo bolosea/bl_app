@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -8,6 +10,30 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  String msg = '获取验证码';
+  int time = 60;
+  Timer timer;
+
+  String phone;
+  String code;
+
+  void _getValidateCode() {
+    if (timer != null && timer.isActive) {
+      return;
+    }
+    timer = Timer.periodic(Duration(seconds: 1), (t) {
+      setState(() {
+        if (time == 0) {
+          msg = '获取验证码';
+          time = 60;
+          return timer.cancel();
+        }
+        time = time - 1;
+        msg = "$time(s)";
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,6 +48,11 @@ class _LoginState extends State<Login> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.0),
                 child: TextField(
+                  onChanged: (value){
+                    setState((){
+                      phone = value;
+                    });
+                  },
                   decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.mobile_screen_share,
@@ -44,6 +75,11 @@ class _LoginState extends State<Login> {
                     children: <Widget>[
                       Expanded(
                         child: TextField(
+                          onChanged: (value){
+                            setState(() {
+                              code = value;
+                            });
+                          },
                           decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Icons.lock_outline,
@@ -55,15 +91,20 @@ class _LoginState extends State<Login> {
                           keyboardType: TextInputType.text,
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.center,
-                        width: 100,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: Color.fromRGBO(237, 237, 237, 1),
+                      GestureDetector(
+                        onTap: () {
+                          _getValidateCode();
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 100,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Color.fromRGBO(237, 237, 237, 1),
+                          ),
+                          child: Text("$msg"),
                         ),
-                        child: Text("获取验证码"),
                       )
                     ],
                   )),
@@ -79,7 +120,8 @@ class _LoginState extends State<Login> {
                       print('登录。。');
                     },
                     // shape: CircleBorder(side: BorderSide(color: Colors.red)),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
                     child: Text(
                       '登录',
                       style: TextStyle(color: Colors.white, fontSize: 18),

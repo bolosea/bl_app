@@ -1,6 +1,9 @@
+import 'package:bl_app/question/question.dart';
 import 'package:flutter/material.dart';
 
+import 'home/home.dart';
 import 'login/login.dart';
+import 'video/video.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,9 +13,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '菠萝君',
-      home:Login(),
+      home: Home(),
       debugShowCheckedModeBanner: false,
+      routes: {
+        // "/": (context)=>Home(),
+        "/question": (context)=>Question(),
+        "/video": (context) => Video()
+      },
     );
   }
 }
-
