@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'home/home.dart';
 import 'login/login.dart';
+import 'news/news.dart';
 import 'video/video.dart';
 
 void main() => runApp(MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       home: Home(),
       debugShowCheckedModeBanner: false,
       routes: {
-        // "/": (context)=>Home(),
+        "/news": (context)=>News(),
         "/question": (context)=>Question(),
         "/video": (context) => Video()
       },
