@@ -26,11 +26,14 @@ class _NewsState extends State<News> {
     Response res = await Dio().get('http://118.24.19.83/category/list');
     // print(res);
     List d = res.data['data'];
+    print(d);
     if (res.data['code'] == 0) {
       setState(() {
         _categoryList = d.map((value) => Category.fromJson(value)).toList();
       });
     }
+
+    print('_categoryList: ${_categoryList}');
   }
 
   @override
@@ -94,7 +97,7 @@ class _NewsState extends State<News> {
                               }).toList())),
                     )),
                 body: TabBarView(children:  _categoryList.map((category){
-                  return TabBarContent(categoryId: category.id);
+                  return TabBarContent(category: category);
                 }).toList())))
         : SizedBox();
   }
